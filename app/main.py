@@ -1,5 +1,6 @@
 # FastAPI import panrom
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware  # <-- 1. Inka CORS import pannirukkom
 
 # Database engine and Base import panrom
 from app.database import engine, Base
@@ -31,6 +32,14 @@ app = FastAPI(
 Base.metadata.create_all(bind=engine)
 
 # middle wear add pannanum
+# <-- 2. Inka CORS middleware add pannirukkom
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],       # Ella origins-aiyum allow panna ("*" potrukom)
+    allow_credentials=True,
+    allow_methods=["*"],       # GET, POST, PUT, DELETE ella methods-aiyum allow pannum
+    allow_headers=["*"],       # Ella headers-aiyum allow pannum
+)
 
 
 # routers a applicationkku include panrom
