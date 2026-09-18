@@ -19,6 +19,13 @@ from app.schemas.book import (
     BookResponse
 )
 
+# User authentication and authorization functions import panrom
+from app.auth.security import (
+    get_current_user,
+    require_admin,
+    require_librarian
+)
+
 
 # =========================================================
 # BOOK ROUTER
@@ -38,7 +45,8 @@ router = APIRouter(
 def get_books(
     category: str | None = None,
     max_price: float | None = None,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
 
     # Database-la Book table-ai query panrom
@@ -86,7 +94,8 @@ def get_books(
 @router.get("/{book_id}", response_model=BookResponse)
 def get_book(
     book_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
 
     # book_id use panni book search panrom
@@ -124,7 +133,8 @@ def get_book(
 )
 def create_book(
     book: BookCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(require_librarian)
 ):
 
     # Author name use panni author search panrom
@@ -202,7 +212,8 @@ def create_book(
 def update_book(
     book_id: int,
     book_update: BookUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(require_librarian)
 ):
 
     # Book search panrom
@@ -324,7 +335,8 @@ def update_book(
 @router.delete("/{book_id}")
 def delete_book(
     book_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(require_admin)
 ):
 
     # Book search panrom

@@ -102,7 +102,7 @@ def create_access_token(
 
     return token
 
-
+# user ku enna access kidaikum endu 
 def get_current_user(
     token: str = Depends(
         oauth2_scheme
@@ -155,7 +155,7 @@ def get_current_user(
 
     return user
 
-
+# admin ku enna access kidaikum endu
 def require_admin(
     current_user: User = Depends(
         get_current_user
@@ -169,7 +169,7 @@ def require_admin(
 
     return current_user
 
-
+# librarian ku enna access kidaikum endu
 def require_librarian(
     current_user: User = Depends(
         get_current_user
